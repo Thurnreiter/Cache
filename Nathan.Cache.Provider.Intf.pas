@@ -3,11 +3,6 @@ unit Nathan.Cache.Provider.Intf;
 interface
 
 type
-  {$REGION 'Links'}
-  {
-    http://www.delphipraxis.net/186051-code-kata-cache-klasse-wer-produziert-den-besten-code.html
-  }
-  {$ENDREGION}
 
 {$M+}
 
@@ -17,10 +12,10 @@ type
     ['{714F69BA-B10A-44D4-9364-791CA9B6DD01}']
 
     /// <summary>
-    ///   Gibt die maximale Grösse des Caches an. MaxSize = 2 bedeuet, hier wird beim
-    ///   Einfügen ab dem Element 3 z.B. "Put(3, TMyObject.CreateInstance(333));" das
-    ///   letzte Element, hier 2 gelöscht und 3 als letztes hinzugefügt. Das gannze passiert so
-    ///   oft, bis nur noch Element 1 und z.B. 5 (letztes hinzufügen) im Cache verbleiben.
+    ///   Gibt die maximale GrÃ¶sse des Caches an. MaxSize = 2 bedeuet, hier wird beim
+    ///   EinfÃ¼gen ab dem Element 3 z.B. "Put(3, TMyObject.CreateInstance(333));" das
+    ///   letzte Element, hier 2 gelÃ¶scht und 3 als letztes hinzugefÃ¼gt. Das gannze passiert so
+    ///   oft, bis nur noch Element 1 und z.B. 5 (letztes hinzufÃ¼gen) im Cache verbleiben.
     /// </summary>
     function GetSize(): Integer;
 
@@ -30,17 +25,17 @@ type
     function GetCurrentNumberOfElements(): Integer;
 
     /// <summary>
-    ///   Prüft ob das Element mit ID vorhanden ist.
+    ///   PrÃ¼ft ob das Element mit ID vorhanden ist.
     /// </summary>
     function Contains(Id: Integer): Boolean;
 
     /// <summary>
-    ///   Gibt das Element zur ID zurück.
+    ///   Gibt das Element zur ID zurÃ¼ck.
     /// </summary>
     function Get(Id: Integer): TObject;
 
     /// <summary>
-    ///   Fügt ein Element mit der ID dem Cache hinzu.
+    ///   FÃ¼gt ein Element mit der ID dem Cache hinzu.
     /// </summary>
     procedure Put(Id: Integer; Item: TObject);
 
@@ -60,13 +55,13 @@ type
     property MaxSize: Integer read GetSize;
 
     /// <summary>
-    ///   Die tatsächliche Anzahl Elemente im Cache.
+    ///   Die tatsÃ¤chliche Anzahl Elemente im Cache.
     /// </summary>
     property CurrentNumberOfElements: Integer read GetCurrentNumberOfElements;
   end;
 
   /// <summary>
-  ///   Interface für generische Values. sonst gleich wie der Manager für TObjects.
+  ///   Interface fÃ¼r generische Values. sonst gleich wie der Manager fÃ¼r TObjects.
   /// </summary>
   INathanCacheProvider<T> = interface
     ['{BBCBBCE9-5AE1-4AF8-B299-8E0909250CDB}']
