@@ -1,0 +1,48 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{432D4DDE-82A6-4144-99A5-DEA1CC757EE1}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="Nathan.Cache.UnitTestX\Nathan.Cache.UnitTestsX.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="Nathan.Cache.IntegrationTestX\Nathan.Cache.IntegrationTests.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="Nathan_Cache_UnitTestsX">
+        <MSBuild Projects="Nathan.Cache.UnitTestX\Nathan.Cache.UnitTestsX.dproj"/>
+    </Target>
+    <Target Name="Nathan_Cache_UnitTestsX:Clean">
+        <MSBuild Projects="Nathan.Cache.UnitTestX\Nathan.Cache.UnitTestsX.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="Nathan_Cache_UnitTestsX:Make">
+        <MSBuild Projects="Nathan.Cache.UnitTestX\Nathan.Cache.UnitTestsX.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Nathan_Cache_IntegrationTests">
+        <MSBuild Projects="Nathan.Cache.IntegrationTestX\Nathan.Cache.IntegrationTests.dproj"/>
+    </Target>
+    <Target Name="Nathan_Cache_IntegrationTests:Clean">
+        <MSBuild Projects="Nathan.Cache.IntegrationTestX\Nathan.Cache.IntegrationTests.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="Nathan_Cache_IntegrationTests:Make">
+        <MSBuild Projects="Nathan.Cache.IntegrationTestX\Nathan.Cache.IntegrationTests.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="Nathan_Cache_UnitTestsX;Nathan_Cache_IntegrationTests"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="Nathan_Cache_UnitTestsX:Clean;Nathan_Cache_IntegrationTests:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="Nathan_Cache_UnitTestsX:Make;Nathan_Cache_IntegrationTests:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>
