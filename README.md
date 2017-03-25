@@ -4,11 +4,10 @@ A simple implementation of a cache manager. The cache manager accepts a cache pr
 
 Example:
 
-Init:
+```delphi
 FCacheManager := TNathanCacheManager<string>.GetInstance()
 FCacheManager.AddCacheProvider(TNathanCacheProviderT<string>.Create());
-
-```delphi
+...
 var
   CacheValue: string;
 ...
