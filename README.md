@@ -8,8 +8,9 @@ Init:
 FCacheManager := TNathanCacheManager<string>.GetInstance()
 FCacheManager.AddCacheProvider(TNathanCacheProviderT<string>.Create());
 
-Use:
-CacheValue: string;
+```delphi
+var
+  CacheValue: string;
 ...
 CacheValue := FCacheManager.GetOrAddCache(ARecordIndex,
   function: string
@@ -20,5 +21,5 @@ CacheValue := FCacheManager.GetOrAddCache(ARecordIndex,
   begin
     CacheValue := MyText;
   end);
-
+```
 For more examples, show test files.
