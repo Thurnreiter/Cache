@@ -22,6 +22,9 @@ type
 
     [Test]
     procedure Test_Manager_GetOrAddCache_Callback();
+
+    [Test]
+    procedure Test_Manager_GetOrAddCache_SeveralTimes();
   end;
 
 {$M-}
@@ -87,6 +90,27 @@ begin
 
   Assert.AreEqual('', Actual);
   Assert.AreEqual('MyText', ActualCallback);
+end;
+
+procedure TTestNathanCacheManagerGenerics.Test_Manager_GetOrAddCache_SeveralTimes();
+var
+  StringCacheProvider: INathanCacheProvider<string>;
+  Actual: string;
+  CacheKey: Integer;
+begin
+  CacheKey := 123;
+  StringCacheProvider := TNathanCacheProviderT<string>.Create();
+  FCut := TNathanCacheManager<string>.Create();
+  FCut.UseThreading := False;
+  FCut.AddCacheProvider(StringCacheProvider);
+
+  Actual := FCut.GetOrAddCache(CacheKey,
+    function(MyId: Integer): string
+    begin
+      Result := 'MyText' + (MyId * 10).ToString;
+    end);
+
+  Assert.AreEqual('MyText1230', Actual);
 end;
 
 initialization
