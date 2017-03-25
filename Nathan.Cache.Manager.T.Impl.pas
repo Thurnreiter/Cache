@@ -18,7 +18,7 @@ type
     function GetUseThreading(): Boolean;
     procedure SetUseThreading(Value: Boolean);
 
-    procedure CacheRunner(Id: Integer; AcquireFunc: TFunc<T>);
+    procedure CacheRunner(Id: Integer; CacheValue: T);
   public
     class function GetInstance(): INathanCacheManager<T>;
 
@@ -26,6 +26,7 @@ type
     procedure AddCacheProvider(Cache: INathanCacheProvider<T>);
 
     function GetOrAddCache(Id: Integer; AcquireFunc: TFunc<T>): T; overload;
+    function GetOrAddCache(Id: Integer; AcquireFunc: TFunc<Integer, T>): T; overload;
     function GetOrAddCache(Id: Integer; AcquireFunc: TFunc<T>; CallbackAction: TProc<Integer, T>): T; overload;
   end;
 
@@ -76,6 +77,17 @@ begin
     CacheRunner(Id, AcquireFunc);
 end;
 
+function TNathanCacheManager<T>.GetOrAddCache(Id: Integer; AcquireFunc: TFunc<Integer, T>): T;
+begin
+  if FCacheProvider.Contains(Id) then
+    Result := FCacheProvider.Get(Id)
+  else
+  begin
+    CacheRunner(Id, AcquireFunc(Id));
+    Result := FCacheProvider.Get(Id)
+  end;
+end;
+
 function TNathanCacheManager<T>.GetOrAddCache(Id: Integer; AcquireFunc: TFunc<T>; CallbackAction: TProc<Integer, T>): T;
 begin
   if FCacheProvider.Contains(Id) then
@@ -87,14 +99,16 @@ begin
   end;
 end;
 
-procedure TNathanCacheManager<T>.CacheRunner(Id: Integer; AcquireFunc: TFunc<T>);
+//procedure TNathanCacheManager<T>.CacheRunner(Id: Integer; AcquireFunc: TFunc<T>);
+procedure TNathanCacheManager<T>.CacheRunner(Id: Integer; CacheValue: T);
 begin
   if not Assigned(FCacheProvider) then
     raise EArgumentNilException.Create(ArgumentNilExceptionCacheProvider);
 
   if (not FUseThreading) then
   begin
-    FCacheProvider.Put(Id, AcquireFunc);
+//    FCacheProvider.Put(Id, AcquireFunc);
+    FCacheProvider.Put(Id, CacheValue);
     Exit;
   end;
 
@@ -104,9 +118,10 @@ begin
       if (TTask.CurrentTask.Status = TTaskStatus.Canceled) then
         Exit;
 
-      FCacheProvider.Put(Id, AcquireFunc);
+//      FCacheProvider.Put(Id, AcquireFunc);
+      FCacheProvider.Put(Id, CacheValue);
     end);
-  {$REGION 'Demop'}
+  {$REGION 'Demo'}
     //  TTask.Run( procedure
     //             begin
     //               TTask.WaitForAll(Tasks1to2);
