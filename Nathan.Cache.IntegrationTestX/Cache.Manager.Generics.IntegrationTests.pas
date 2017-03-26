@@ -97,19 +97,21 @@ var
   StringCacheProvider: INathanCacheProvider<string>;
   Actual: string;
   CacheKey: Integer;
+  DummyAcquireFunc: TFunc<Integer, string>;
 begin
+  DummyAcquireFunc :=
+    function(MyId: Integer): string
+    begin
+      Result := 'MyText' + (MyId * 10).ToString;
+    end;
+
   CacheKey := 123;
   StringCacheProvider := TNathanCacheProviderT<string>.Create();
   FCut := TNathanCacheManager<string>.Create();
   FCut.UseThreading := False;
   FCut.AddCacheProvider(StringCacheProvider);
 
-  Actual := FCut.GetOrAddCache(CacheKey,
-    function(MyId: Integer): string
-    begin
-      Result := 'MyText' + (MyId * 10).ToString;
-    end);
-
+  Actual := FCut.GetOrAddCache(CacheKey, DummyAcquireFunc);
   Assert.AreEqual('MyText1230', Actual);
 end;
 
