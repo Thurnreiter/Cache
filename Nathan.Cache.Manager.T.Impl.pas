@@ -33,6 +33,7 @@ type
 implementation
 
 uses
+  System.Classes,
   System.Threading;
 
 { TNathanCacheManager<T> }
