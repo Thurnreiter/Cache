@@ -1,6 +1,6 @@
 # Cache
-Simple Cache Manager Provider
-A simple implementation of a cache manager. The cache manager accepts a cache provider and can fill it eg. by thread.
+Simple Cache Manager - Provider<br>
+A simple implementation of a cache manager. The cache manager accepts any cache provider and can fill it eg. by thread.
 
 Example:
 
