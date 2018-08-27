@@ -6,7 +6,7 @@ program Nathan.Cache.UnitTestsX;
 
 uses
   {$IFDEF TESTINSIGHT}
-    TestInsight.DUnitX,
+  TestInsight.DUnitX,
   {$ENDIF }
   DUnitX.TestFramework,
   DUnitX.Loggers.Console,
@@ -23,7 +23,14 @@ uses
   Nathan.Cache.Provider.T.Impl in '..\Nathan.Cache.Provider.T.Impl.pas',
   Nathan.Cache.Provider.Impl1 in '..\Nathan.Cache.Provider.Impl1.pas',
   System.SysUtils,
-  System.IOUtils;
+  System.IOUtils,
+  Nathan.Cache.InChunk.Provider.Intf in '..\Nathan.Cache.InChunk.Provider.Intf.pas',
+  Nathan.Cache.InChunk.Manager.Intf in '..\Nathan.Cache.InChunk.Manager.Intf.pas',
+  Nathan.Cache.InChunk.Manager.Impl in '..\Nathan.Cache.InChunk.Manager.Impl.pas',
+  Nathan.Cache.InChunk.Provider.Impl in '..\Nathan.Cache.InChunk.Provider.Impl.pas',
+  Cache.Provider.InChunk.UnitTests in 'Cache.Provider.InChunk.UnitTests.pas',
+  Cache.Provider.InChunk.DummyObject in 'Cache.Provider.InChunk.DummyObject.pas',
+  Cache.Manager.InChunk.UnitTests in 'Cache.Manager.InChunk.UnitTests.pas';
 
 var
   Runner: ITestRunner;
