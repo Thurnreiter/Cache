@@ -97,8 +97,8 @@ begin
       Exit(Default(V));
 
     //  Chunk filling...
-    FFillCacheProvider(FCacheProviderCoreT);
-    while (not ((FCacheProviderCoreT.Count mod FCapacity) = 0)) do
+    while (FCacheProviderCoreT.Count = 0)
+    or (not ((FCacheProviderCoreT.Count mod FCapacity) = 0)) do
       FFillCacheProvider(FCacheProviderCoreT);
 
     Result := FCacheProviderCoreT.Get(AKey);
