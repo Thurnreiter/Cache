@@ -99,7 +99,11 @@ begin
     //  Chunk filling...
     while (FCacheProviderCoreT.Count = 0)
     or (not ((FCacheProviderCoreT.Count mod FCapacity) = 0)) do
+    begin
       FFillCacheProvider(FCacheProviderCoreT);
+      if (FCacheProviderCoreT.Count = 0) then
+        Exit(Default(V));
+    end;
 
     Result := FCacheProviderCoreT.Get(AKey);
     if FComparerV.Equals(Result, Default(V)) then

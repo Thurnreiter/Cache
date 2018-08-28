@@ -18,6 +18,9 @@ type
 
     [Test]
     procedure Test_CacheManagerUpper9LoopT;
+
+    [Test]
+    procedure Test_CacheManagerWithNoDataFiller;
   end;
 
 {$M-}
@@ -105,6 +108,25 @@ begin
   Assert.AreEqual('3', Actual);
 
   Actual := CutManager.Get(4711);
+  Assert.AreEqual('', Actual);
+end;
+
+procedure TTestCacheManagereCoreT.Test_CacheManagerWithNoDataFiller;
+var
+  Actual: string;
+  CutManager: ICacheManagerCoreT<Integer, string>;
+  CutProvider: ICacheProviderCoreT<Integer, string>;
+begin
+  CutProvider := TCacheProviderCoreT<Integer, string>.Create;
+  CutManager := TCacheManagerCoreT<Integer, string>.Create(3);
+
+  CutManager.FillCacheProvider(
+    procedure(Value: ICacheProviderCoreT<Integer, string>)
+    begin
+    end);
+  CutManager.AddCacheProvider(CutProvider);
+
+  Actual := CutManager.Get(9);
   Assert.AreEqual('', Actual);
 end;
 
