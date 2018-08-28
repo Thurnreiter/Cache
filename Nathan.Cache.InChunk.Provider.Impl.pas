@@ -14,6 +14,8 @@ type
   strict private
     FDic: TDictionary<K,V>;
     FOnFirstKey: TProc<K>;
+//  private
+//    procedure OnValueNotify(Sender: TObject; const Item: V; Action: TCollectionNotification);
   public
     constructor Create();
     destructor Destroy(); override;
@@ -29,6 +31,10 @@ type
 {$M-}
 
 implementation
+
+uses
+  System.Rtti,
+  System.TypInfo;
 
 { TCacheProviderCoreT<K, V> }
 
@@ -53,14 +59,24 @@ begin
 end;
 
 procedure TCacheProviderCoreT<K, V>.Clear;
-var
-  Idx: Integer;
 begin
-  for Idx := FDic.Count - 1 downto 0 do
-    FDic.Remove(FDic.Keys.ToArray[Idx]);
-
+//  FDic.OnValueNotify := OnValueNotify;
   FDic.Clear;
+//  FDic.OnValueNotify := nil;
 end;
+
+//procedure TCacheProviderCoreT<K, V>.OnValueNotify(Sender: TObject; const Item: V; Action: TCollectionNotification);
+//var
+//  Info: PTypeInfo;
+//begin
+//  Action: TCollectionNotification = cnRemoved
+//  if PTypeInfo(TypeInfo(V))^.Kind  <> tkClass then
+//    raise Exception.Create('V are unsupported type.');
+
+//  Info := System.TypeInfo(V);
+//  if (Info.Kind = tkClass) then
+//    TObject(Item).Free;
+//end;
 
 function TCacheProviderCoreT<K, V>.Count: Integer;
 begin

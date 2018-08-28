@@ -20,6 +20,9 @@ type
 
     [Test]
     procedure Test_KeyValueIntegerString();
+
+    [Test]
+    procedure Test_KeyValueFreedByClear();
   end;
 
 {$M-}
@@ -81,7 +84,36 @@ begin
   Assert.AreEqual('Hello world...', Actual);
 end;
 
+procedure TTestCacheProviderCoreT.Test_KeyValueFreedByClear;
+var
+  Cut: ICacheProviderCoreT<Integer, TObject>;
+  Dummy1: TObject;
+  Dummy2: TObject;
+  Actual: TObject;
+begin
+  //  Arrange...
+  Dummy1 := TObject.Create;
+  Dummy2 := TObject.Create;
+  try
+    Cut := TCacheProviderCoreT<Integer, TObject>.Create;
+
+    //  Assert + Act...
+    Cut.Add(4711, Dummy1);
+    Assert.AreEqual(1, Cut.Count);
+
+    Cut.Add(4712, Dummy2);
+    Assert.AreEqual(2, Cut.Count);
+
+    Actual := Cut.Get(4711);
+    Assert.AreEqual('TObject', Actual.ClassName);
+    Cut.Clear;
+  finally
+    Dummy1.Free();
+    Dummy2.Free();
+  end;
+end;
+
 initialization
-  TDUnitX.RegisterTestFixture(TTestCacheProviderCoreT, 'ProviderT');
+  TDUnitX.RegisterTestFixture(TTestCacheProviderCoreT, 'ProviderTNextGen');
 
 end.
