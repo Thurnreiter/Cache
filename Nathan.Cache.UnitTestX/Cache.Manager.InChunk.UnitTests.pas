@@ -21,6 +21,15 @@ type
 
     [Test]
     procedure Test_CacheManagerWithNoDataFiller;
+
+    [Test(False)]
+    procedure Test_CacheManagerEndlessLoop;
+
+    [Test]
+    procedure Test_CacheManagerEndlessLoopWithHugerData;
+
+    [Test]
+    procedure Test_CacheManagerEndlessLoopWith5Elements;
   end;
 
 {$M-}
@@ -55,7 +64,7 @@ begin
     begin
       Value.Add(Idx, Idx.ToString);
       Inc(Idx);
-      if Idx > 10 then
+      if (Idx > 10) then
         Idx := 0;
     end);
   CutManager.AddCacheProvider(CutProvider);
@@ -87,7 +96,7 @@ begin
     begin
       Value.Add(Idx, Idx.ToString);
       Inc(Idx);
-      if Idx > 10 then
+      if (Idx > 10) then
         Idx := 0;
     end);
   CutManager.AddCacheProvider(CutProvider);
@@ -130,7 +139,116 @@ begin
   Assert.AreEqual('', Actual);
 end;
 
+procedure TTestCacheManagereCoreT.Test_CacheManagerEndlessLoop;
+var
+  Idx: Integer;
+  Actual: string;
+  CutManager: ICacheManagerCoreT<Integer, string>;
+  CutProvider: ICacheProviderCoreT<Integer, string>;
+begin
+  //  5 Elements in two-parts chunks...
+  //  Arrange...
+  Idx := 1;
+  CutProvider := TCacheProviderCoreT<Integer, string>.Create;
+  CutManager := TCacheManagerCoreT<Integer, string>.Create(2);
+
+  CutManager.FillCacheProvider(
+    procedure(Value: ICacheProviderCoreT<Integer, string>)
+    begin
+      Value.Add(Idx, Idx.ToString);
+      Inc(Idx);
+      if (Idx > 5) then
+        Idx := 1;   //  Start from first element...
+    end);
+  CutManager.AddCacheProvider(CutProvider);
+
+  //  Assert + Act...
+  Actual := CutManager.Get(4);
+  Assert.AreEqual('4', Actual);
+
+  Actual := CutManager.Get(4711);
+  Assert.AreEqual('', Actual);
+end;
+
+procedure TTestCacheManagereCoreT.Test_CacheManagerEndlessLoopWithHugerData;
+var
+  Idx: Integer;
+  Actual: string;
+  CutManager: ICacheManagerCoreT<Integer, string>;
+  CutProvider: ICacheProviderCoreT<Integer, string>;
+begin
+  //  Arrange...
+  Idx := 1;
+  CutProvider := TCacheProviderCoreT<Integer, string>.Create;
+  CutManager := TCacheManagerCoreT<Integer, string>.Create(10);
+  CutManager.SetMax(50000000);
+
+  CutManager.FillCacheProvider(
+    procedure(Value: ICacheProviderCoreT<Integer, string>)
+    begin
+      Value.Add(Idx, Idx.ToString);
+      Inc(Idx);
+
+      if (Idx > 50000000) then
+        Idx := 1;
+    end);
+  CutManager.AddCacheProvider(CutProvider);
+
+  //  Assert + Act...
+  Actual := CutManager.GetMax(4);
+  Assert.AreEqual('4', Actual);
+
+  Actual := CutManager.GetMax(22);
+  Assert.AreEqual('22', Actual);
+
+  Actual := CutManager.GetMax(2);
+  Assert.AreEqual('2', Actual);
+
+  Actual := CutManager.GetMax(4711);
+  Assert.AreEqual('4711', Actual);
+
+  Actual := CutManager.GetMax(50000010);
+  Assert.AreEqual('', Actual);
+end;
+
+procedure TTestCacheManagereCoreT.Test_CacheManagerEndlessLoopWith5Elements;
+var
+  Idx: Integer;
+  Actual: string;
+  CutManager: ICacheManagerCoreT<Integer, string>;
+  CutProvider: ICacheProviderCoreT<Integer, string>;
+begin
+  //  Arrange...
+  Idx := 1;
+  CutProvider := TCacheProviderCoreT<Integer, string>.Create;
+  CutManager := TCacheManagerCoreT<Integer, string>.Create(2);
+  CutManager.SetMax(5);
+
+  CutManager.FillCacheProvider(
+    procedure(Value: ICacheProviderCoreT<Integer, string>)
+    begin
+      Value.Add(Idx, Idx.ToString);
+      Inc(Idx);
+      if (Idx > 5) then
+        Idx := 1;
+    end);
+  CutManager.AddCacheProvider(CutProvider);
+
+  //  Assert + Act...
+  Actual := CutManager.GetMax(4);
+  Assert.AreEqual('4', Actual);
+
+  Actual := CutManager.GetMax(2);
+  Assert.AreEqual('2', Actual);
+
+  Actual := CutManager.GetMax(15);
+  Assert.AreEqual('', Actual);
+
+  Actual := CutManager.GetMax(5);
+  Assert.AreEqual('5', Actual);
+end;
+
 initialization
-  TDUnitX.RegisterTestFixture(TTestCacheManagereCoreT, 'ManagerT');
+  TDUnitX.RegisterTestFixture(TTestCacheManagereCoreT, 'ManagerTNextGen');
 
 end.

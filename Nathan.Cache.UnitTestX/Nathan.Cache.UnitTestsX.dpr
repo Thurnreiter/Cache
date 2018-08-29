@@ -8,6 +8,8 @@ uses
   {$IFDEF TESTINSIGHT}
   TestInsight.DUnitX,
   {$ENDIF }
+  System.SysUtils,
+  System.IOUtils,
   DUnitX.TestFramework,
   DUnitX.Loggers.Console,
   DUnitX.Loggers.Xml.NUnit,
@@ -22,8 +24,6 @@ uses
   Nathan.Cache.Provider.Intf in '..\Nathan.Cache.Provider.Intf.pas',
   Nathan.Cache.Provider.T.Impl in '..\Nathan.Cache.Provider.T.Impl.pas',
   Nathan.Cache.Provider.Impl1 in '..\Nathan.Cache.Provider.Impl1.pas',
-  System.SysUtils,
-  System.IOUtils,
   Nathan.Cache.InChunk.Provider.Intf in '..\Nathan.Cache.InChunk.Provider.Intf.pas',
   Nathan.Cache.InChunk.Manager.Intf in '..\Nathan.Cache.InChunk.Manager.Intf.pas',
   Nathan.Cache.InChunk.Manager.Impl in '..\Nathan.Cache.InChunk.Manager.Impl.pas',

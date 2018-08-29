@@ -54,15 +54,15 @@ end;
 procedure TCacheProviderCoreT<K, V>.Add(AKey: K; AValue: V);
 begin
   FDic.AddOrSetValue(AKey, AValue);
-  if (FDic.Count = 1) and Assigned(FOnFirstKey) then
+  if Assigned(FOnFirstKey) then
     FOnFirstKey(AKey);
 end;
 
 procedure TCacheProviderCoreT<K, V>.Clear;
 begin
-//  FDic.OnValueNotify := OnValueNotify;
+  //  FDic.OnValueNotify := OnValueNotify;
   FDic.Clear;
-//  FDic.OnValueNotify := nil;
+  //  FDic.OnValueNotify := nil;
 end;
 
 //procedure TCacheProviderCoreT<K, V>.OnValueNotify(Sender: TObject; const Item: V; Action: TCollectionNotification);

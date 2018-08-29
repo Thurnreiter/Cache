@@ -52,8 +52,8 @@ type
     procedure Test_Put_Get_Contains_SeveralTimes();
 
     [Test]
-    [TestCase('TestcaseDuration25', '10,25')]
-    [TestCase('TestcaseDuration50', '2,50')]
+    [TestCase('TestcaseDuration25', '10,50')]
+    [TestCase('TestcaseDuration50', '2,150')]
     procedure Test_Duration_MaxSize(ValueMaxSize, ValueMaxDuration: Integer);
   end;
 
@@ -244,8 +244,9 @@ begin
   MeasureWatch.Stop;
 
   Assert.IsTrue(
-    (MeasureWatch.ElapsedTicks < ValueMaxDuration),
-    Format('Cache with %d max. %d ElapsedTicks is to slow.', [ValueMaxSize, ValueMaxDuration]));
+    (MeasureWatch.ElapsedTicks <= ValueMaxDuration),
+    Format('Cache with %d max. need %d ElapsedTicks by %d, is to slow.',
+      [ValueMaxSize, MeasureWatch.ElapsedTicks, ValueMaxDuration]));
 end;
 
 initialization

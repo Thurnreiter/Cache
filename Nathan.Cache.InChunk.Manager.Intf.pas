@@ -12,6 +12,11 @@ type
   ICacheManagerCoreT<K, V> = interface
     ['{F4C1D1F5-9935-4D4F-9B27-2C0A2763FE99}']
     /// <summary>
+    ///   Gibt die maximale Anzahgl Elemente an.
+    /// </summary>
+    procedure SetMax(AValue: Integer);
+
+    /// <summary>
     ///   Fügt einen Cache Provider dem Manager hinzu.
     /// </summary>
     procedure AddCacheProvider(ACacheProviderCore: ICacheProviderCoreT<K, V>);
@@ -26,6 +31,8 @@ type
     ///   Return ist der Value. Sollte nicht gefunden, gibt's ein Default(V).
     /// </summary>
     function Get(AKey: K): V;
+
+    function GetMax(AKey: K): V;
   end;
 
 {$M-}
